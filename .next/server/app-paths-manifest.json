@@ -1,0 +1,6 @@
+{
+  "/page": "app/page.js",
+  "/itineraries/page": "app/itineraries/page.js",
+  "/itinerary/edit/[id]/page": "app/itinerary/edit/[id]/page.js",
+  "/offline/page": "app/offline/page.js"
+}
