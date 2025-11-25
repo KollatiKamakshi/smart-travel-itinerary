@@ -1,45 +1,76 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-export default function OfflinePage() {
+export default function ItinerariesPage() {
     const [saved, setSaved] = useState([]);
 
     useEffect(() => {
-        const items = [];
+        loadItineraries();
+    }, []);
+
+    const loadItineraries = () => {
+        const list = [];
+
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             try {
                 const val = JSON.parse(localStorage.getItem(key));
-                if (val?.destination) items.push(val);
+                if (val?.id && val?.destination) {
+                    list.push(val);
+                }
             } catch { }
         }
-        setSaved(items);
-    }, []);
 
-    if (!navigator.onLine) {
-        return (
-            <div className="max-w-3xl mx-auto p-4">
-                <h1 className="text-xl font-bold mb-4">You are offline!</h1>
-                <p className="mb-4">Your last saved itinerary is still available in your browser.</p>
-                {saved.length > 0 ? (
-                    <div className="space-y-4">
-                        {saved.map((item) => (
-                            <Link
-                                key={item.id}
-                                href={`/itinerary/edit/${item.id}`}
-                                className="block bg-white p-4 rounded shadow hover:bg-blue-50 transition"
-                            >
-                                {item.destination} ({item.days} days) - {item.theme}
-                            </Link>
-                        ))}
-                    </div>
-                ) : (
-                    <p>No itineraries saved yet.</p>
-                )}
-            </div>
-        );
-    } else {
-        return <p className="p-4">You are online. Visit Home to generate itineraries.</p>;
-    }
+        setSaved(list.reverse());
+    };
+
+    const deleteItinerary = (id) => {
+        localStorage.removeItem(id);
+        setSaved(saved.filter((item) => item.id !== id));
+    };
+
+    return (
+        <div className="max-w-3xl mx-auto p-6">
+            <h1 className="text-3xl font-bold mb-4">Saved Itineraries</h1>
+
+            {saved.length === 0 ? (
+                <p>No saved itineraries found.</p>
+            ) : (
+                <div className="space-y-4">
+                    {saved.map((it) => (
+                        <div
+                            key={it.id}
+                            className="bg-white p-4 rounded shadow flex items-center justify-between"
+                        >
+                            <div>
+                                <div className="font-bold">{it.destination}</div>
+                                <div className="text-sm text-gray-600">
+                                    {it.days} days — Theme: {it.theme}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-4 items-center">
+                                <Link
+                                    href={`/itinerary/edit/${it.id}`}
+                                    className="text-blue-600 underline"
+                                >
+                                    Open
+                                </Link>
+
+                                <button
+                                    onClick={() => deleteItinerary(it.id)}
+                                    className="text-red-600 underline"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 }
