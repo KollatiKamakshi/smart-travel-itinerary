@@ -1,7 +1,8 @@
+
+.next
 node_modules
 node_modules/
 .next/
-.next
 .env
 .DS_Store
 npm-debug.log
