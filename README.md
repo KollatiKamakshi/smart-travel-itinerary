@@ -38,5 +38,5 @@ http://localhost:3000
 
 
 Live Demo:
-https://smart-travel-itinerary-git-main-kollati-kamakshis-projects.vercel.app/
+https://smart-travel-itinerary.vercel.app/
 
