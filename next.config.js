@@ -1,11 +1,9 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    appDir: true,
-    optimizeCss: true,
+    optimizeCss: true, // this one is allowed
   },
-  // optional: disable offline for testing
-  // output: 'standalone',
 };
 
 module.exports = nextConfig;
